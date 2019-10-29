@@ -15,7 +15,7 @@ import sys
 sys.path.append('../Diffie_Hellman')
 
 #custom modules for xor encryption and the diffie_hellman algorithm itself
-import dhKey as key
+import dhCrypt as crypt
 import diffie_hellman as dh
 
 HOST = '127.0.0.1'
@@ -33,7 +33,6 @@ try:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("------ BEGIN COMMUNICATION ------")
 
-
         s.connect((HOST, PORT))
 
         data = s.recv(1024)
@@ -47,7 +46,7 @@ try:
         print("received int G: ", numG)
         
         clientPrivNo = dh.generateSelectedNo(numP)
-        clientPubNo = dh.clientPublicIntGen(numG, clientPrivNo, numP)
+        clientPubNo = dh.keyGen(numG, clientPrivNo, numP)
         print("Private num:", clientPrivNo, "public num:", clientPubNo)
 
         s.send(str(clientPubNo).encode())
@@ -56,16 +55,16 @@ try:
         sPubNo = int(data.decode())
         print("Server sent public int:", sPubNo)
 
-        clientSecretKey = dh.clientSecretKeyGen(sPubNo, clientPrivNo, numP)
+        clientSecretKey = dh.keyGen(sPubNo, clientPrivNo, numP)
         print("Secret Key Generated:", clientSecretKey)
 
         print("\nDiffie Hellman Key Exchange Complete! Preparing Message: ", toEncrypt)
 
-        xorMessage = key.strXor(str(clientSecretKey), toEncrypt)
+        xorMessage = crypt.strXor(str(clientSecretKey), toEncrypt)
         s.send(xorMessage)
 
         data = s.recv(1024)
-        decodedSrvMsg = key.byteXor(str(clientSecretKey).encode(), data)
+        decodedSrvMsg = crypt.byteXor(str(clientSecretKey).encode(), data)
 
         print("Server Sent: ", data.decode())
         print("Which decrypts to: ", decodedSrvMsg.decode())
