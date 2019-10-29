@@ -28,7 +28,7 @@ python3 dhClient.py message\ to\ send
     * Note that C is a coprime of P if their greatest common divisor is 1: (P, C)= gcd(P, C) = 1.
 3. The Server chooses a secret integer N1 ∈ {1, ... , P − 1} and sends to the Client number: A = G<sup>N1</sup> mod P
 4. The Client chooses a secret integer N2 ∈ {1, ... , P − 1} and sends to the Server number: B = G<sup>N2</sup> mod P
-5. The Server computes the secret key: Skey = B<sup>N1</sup> mod 𝑃
+5. The Server computes the secret key: Skey = B<sup>N1</sup> mod P
 6. The Client computes the *same* secret key differently: Skey = A<sup>N2</sup> mod P
 
 ## Further Development
@@ -40,8 +40,5 @@ The feedback I got suggested I added:
 - [x] random.seed() for number generation
 
 In addition to that I want to play around with a few things:
-- [ ] Make proper unit tests for every method in my dh libraries
-- [ ] Clean up diffie_hellman library so that my keygen methods are one function (because they can all be one function)
-- [ ] Host/Port manual configuration
-- [ ] Custom Server message
-- [ ] Default messages if no message specified
+- [x] Make proper unit tests for every method in my dh libraries
+- [x] Clean up diffie_hellman library so that my keygen methods are one function (because they can all be one function)

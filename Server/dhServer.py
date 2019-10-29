@@ -26,6 +26,8 @@ message = "message from server"
 
 #Opening the socket on port PORT and establishing a connection
 try:
+    random.seed(a=None, version=2)
+
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()

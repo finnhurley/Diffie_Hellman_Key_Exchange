@@ -30,6 +30,8 @@ if len(toEncrypt) > 20:
 
 
 try:
+    random.seed(a=None, version=2)
+
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("------ BEGIN COMMUNICATION ------")
 
