@@ -14,7 +14,7 @@ import sys
 sys.path.append('../Diffie_Hellman')
 
 #custom modules for xor encryption and the diffie_hellman algorithm itself
-import dhKey as key
+import dhCrypt as crypt
 import diffie_hellman as dh
 
 #Using localhost for test purposes
@@ -53,11 +53,11 @@ try:
                 print("Client public number", cPubNo)
 
                 serverPrivNo = dh.generateSelectedNo(numP)
-                serverPubNo = dh.serverPublicIntGen(numG, serverPrivNo, numP)
+                serverPubNo = dh.keyGen(numG, serverPrivNo, numP)
                 conn.send(str(serverPubNo).encode())
                 print("Server sends public int: ", serverPubNo)
 
-                serverSecretKey = dh.serverSecretKeyGen(cPubNo, serverPrivNo, numP)
+                serverSecretKey = dh.keyGen(cPubNo, serverPrivNo, numP)
                 print("Secret Key Generated:", serverSecretKey)
 
                 print("\nDiffie Hellman Key Exchange Complete! Preparing to Recieve message...")
@@ -68,11 +68,11 @@ try:
                         break
                     break
 
-                clientMessage = key.byteXor(str(serverSecretKey).encode(), data)
+                clientMessage = crypt.byteXor(str(serverSecretKey).encode(), data)
                 print("Client Sent:", data.decode())
                 print("Which decrypts to:", clientMessage.decode())
 
-                encodedSrvMsg = key.strXor(str(serverSecretKey), message)
+                encodedSrvMsg = crypt.strXor(str(serverSecretKey), message)
                 conn.send(encodedSrvMsg)
                 print("Server sending back message: ", message)
 
